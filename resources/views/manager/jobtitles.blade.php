@@ -67,7 +67,7 @@
                     <tr>
                       <td>{{$jobtitle->titlename}}</td>
 
-                      <td>{{$jobtitle->created_at}}</td>
+                      <td>{{date("d F Y",strtotime($jobtitle->created_at))}}</td>
 
                       <td>
                         <form method="GET" action="{{'/manager/jobtitles/update/'.$jobtitle->id }}">

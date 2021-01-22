@@ -167,7 +167,7 @@
                       
 
                       <td>{{$employee->phone}}</td>
-                      <td>{{$employee->created_at}}</td>
+                      <td>{{date("d F",strtotime($employee->created_at))}}</td>
                         
                           @if($employee->isSuspended ==0)
                           <td>
@@ -249,7 +249,7 @@
                       </td>
 
                       <td>{{$evaluator->phone}}</td>
-                      <td>{{$evaluator->created_at}}</td>
+                      <td>{{date("d F",strtotime($evaluator->created_at))}}</td>
 
                           @if($evaluator->isSuspended ==0)
                           <td>

@@ -75,7 +75,8 @@ Route::view('/employee/forgotpassword','employee/forgotpassword')->middleware(['
 Route::view('/employee/resetpassword/{link}', 'employee/resetpassword')->middleware(['guest:employee','revalidate']);
 Route::view('/setevaluationform','employee/setevaluationform')->middleware(['employee','revalidate']);
 Route::view('/evaluateemployee/{id}','employee/evaluateemployee')->middleware(['employee','revalidate']);
-//employee operations
+
+// employee operations
 Route::post('/loginEmployee','Auth\LoginController@employeeLogin');
 Route::post('/requestEmployeePassword','Auth\ForgotPasswordController@employeePasswordResetRequest');
 Route::post('/resetEmployeePassword','Auth\ForgotPasswordController@resetEmployeePassword');
