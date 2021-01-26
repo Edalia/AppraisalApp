@@ -59,6 +59,7 @@ Route::post('/updateJobTitle/{id}','ManagerController@updateJobTitle')->middlewa
 Route::post('/updateObjective/{id}','ManagerController@updateObjective')->middleware(['manager','revalidate']);
 
 //retrieve data--Manager Role
+Route::get('manager/index' , 'ManagerController@indexGetEvaluationData')->middleware(['manager','revalidate']);
 Route::get('manager/employees','ManagerController@getEmployeesData')->middleware(['manager','revalidate']);
 Route::get('manager/jobtitles','ManagerController@getJobTitleData')->middleware(['manager','revalidate']);
 Route::get('manager/objectives','ManagerController@getObjectiveData')->middleware(['manager','revalidate']);

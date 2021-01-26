@@ -58,7 +58,7 @@ class ManagerController extends Controller
     }
 
     public function getObjectiveData(){
-        $objectives =DB::table('objective')
+        $objectives = DB::table('objective')
                         ->where('manager_id',Auth::guard('manager')->user()->id)
                         ->get()
                         ->toArray();
@@ -81,6 +81,35 @@ class ManagerController extends Controller
                     ->with('skills',$skills)
                     ->with('objectiveprioritys',$objectiveprioritys)
                     ->with('titleoptions',$titleoptions);
+    }
+
+    public function indexGetEvaluationData(){
+        
+        $evaluators =   DB::table('employee')
+                                ->where('manager_id',Auth::guard('manager')->user()->id)
+                                ->where('isEvaluator','1')
+                                ->get()
+                                ->toArray();
+
+        /* for each evaluator under this manager, 
+           get their submitted evaluations
+        */
+        foreach($evaluators as $evaluator){
+
+                    $evaluationForms = DB::table('evaluationform')
+                            ->where('evaluator',serialize($evaluator->id))
+                            ->get()
+                            ->toArray();
+        }
+
+
+        
+        
+        return view('manager.index')
+                    ->with('evaluators',json_encode($evaluators,JSON_NUMERIC_CHECK))
+                    ->with('evaluationForms',json_encode($evaluationForms,JSON_NUMERIC_CHECK));
+
+        //return ;
     }
 
 

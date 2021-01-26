@@ -27,7 +27,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <ul class="navbar-nav">
 
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="{{url('employee/index')}}" class="nav-link">Home</a>
+        <a href="{{url('employee/index')}}" class="nav-link">Home Page</a>
       </li>
     </ul>
 
@@ -37,24 +37,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
       </li>
     </ul>
     
-    <ul class="navbar-nav">
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="{{url('/evaluateemployee')}}" class="nav-link">Evaluate Employee</a>
-      </li>
-    </ul>
-
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <li>
         <a class="nav-link" data-toggle="dropdown" href="#">
+        {{Auth::guard('employee')->user()->fname}} &nbsp
+        {{Auth::guard('employee')->user()->lname}}
           <i class="far fa-user"></i>   
+          
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">Profile</span>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-cog"></i>Edit Profile
-          </a>
+          
 
           <a class="dropdown-item dropdown-footer" href="{{ route('logout') }}"
                     onclick="event.preventDefault();

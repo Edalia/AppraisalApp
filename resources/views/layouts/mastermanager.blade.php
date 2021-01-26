@@ -26,30 +26,24 @@
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="../../index3.html" class="nav-link">Home</a>
-      </li>
+      
     </ul>
 
     
 
-    <!-- Right navbar links -->
+    <!-- Logout Button -->
     <ul class="navbar-nav ml-auto">
       <li>
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-user"></i>   
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">Profile</span>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-cog"></i>Edit Profile
-          </a>
-
+        
           <a class="dropdown-item dropdown-footer" href="{{ route('logout') }}"
                     onclick="event.preventDefault();
                     document.getElementById('logout-form').submit();">
           Logout
+          
           <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
             @csrf
           </form>
@@ -64,7 +58,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="/admin-lte/index3.html" class="brand-link">
+    <a class="brand-link">
       <img src="/admin-lte/dist/img/AdminLTELogo.png"
            alt="AdminLTE Logo"
            class="brand-image img-circle elevation-3"
@@ -77,7 +71,7 @@
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="info">
-          <a href="#" class="d-block">{{Auth::guard('manager')->user()->fname}} {{Auth::guard('manager')->user()->lname}}</a>
+          <a  class="d-block">{{Auth::guard('manager')->user()->fname}} {{Auth::guard('manager')->user()->lname}}</a>
         </div>
       </div>
 
@@ -87,17 +81,15 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
 
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Dashboard
-                <i class="right fas fa-angle-left"></i>
-              </p>
+          <li class="nav-item">
+            <a href="{{url('manager/index')}}" class="nav-link">
+              <i class="nav-icon fas fa-bar-chart"></i>
+              <p> Home</p>
             </a>
           </li>
-          
-        
+
+          <hr>
+
           <li class="nav-item">
             <a href="{{url('manager/employees')}}" class="nav-link">
               <i class="nav-icon fas fa-users"></i>

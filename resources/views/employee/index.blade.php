@@ -63,7 +63,7 @@
       <table id="objectiveList" class="table table-bordered table-hover">
                   <thead>
                     <tr>
-                      <th>Employee Name</th>
+                      <th>Employee Name (Select to Evaluate)</th>
                       <th>Start Period</th>
                       <th>End Period</th>
                     </tr>

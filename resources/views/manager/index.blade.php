@@ -18,29 +18,53 @@
     </section>
 
     <section class="content">
+          <div class="container">
+          <div class="row">
+              <div class="col-md-10 offset-md-1">
+                  <div class="panel panel-default">
+                      <div class="panel-heading">Dashboard</div>
+                      <div class="panel-body">
+                          <canvas id="canvas" height="280" width="600"></canvas>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+      <script>
+          var year = <?php echo $evaluators; ?>;
+          var user = <?php echo $evaluationForms; ?>;
+          var barChartData = {
+              labels: year,
+              datasets: [{
+                  label: 'User',
+                  backgroundColor: "pink",
+                  data: user
+              }]
+          };
 
-    <!-- Default box -->
-    <div class="card">
-    <div class="card-header">
-        <h3 class="card-title">Title</h3>
-
-        <div class="card-tools">
-        <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-            <i class="fas fa-minus"></i></button>
-        <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-            <i class="fas fa-times"></i></button>
-        </div>
-    </div>
-    <div class="card-body">
-        Start creating your amazing application!
-    </div>
-    <!-- /.card-body -->
-    <div class="card-footer">
-        Footer
-    </div>
-    <!-- /.card-footer-->
-    </div>
-    <!-- /.card -->
+          window.onload = function() {
+              var ctx = document.getElementById("canvas").getContext("2d");
+              window.myBar = new Chart(ctx, {
+                  type: 'bar',
+                  data: barChartData,
+                  options: {
+                      elements: {
+                          rectangle: {
+                              borderWidth: 2,
+                              borderColor: '#c1c1c1',
+                              borderSkipped: 'bottom'
+                          }
+                      },
+                      responsive: true,
+                      title: {
+                          display: true,
+                          text: 'Yearly User Joined'
+                      }
+                  }
+              });
+          };
+      </script>
 
     </section>
 @endsection

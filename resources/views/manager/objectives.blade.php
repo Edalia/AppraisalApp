@@ -179,7 +179,7 @@
                       
                       @endif</td>
                       
-                      <td>{{$objective->created_at}}</td>
+                      <td>{{date("d F Y",strtotime($objective->created_at))}}</td>
                       
                       <td>
                         <form method="GET" action="{{'/manager/objectives/update/'.$objective->id }}">
