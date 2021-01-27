@@ -6,6 +6,7 @@ use Auth;
 use App\JobTitle;
 use App\Employee;
 use App\Objective;
+use App\Chart;
 use Illuminate\Http\Request;
 use App\Mail\SendMail;
 use Illuminate\Support\Str;
@@ -85,6 +86,12 @@ class ManagerController extends Controller
 
     //reports
     public function indexGetEvaluationData(){
+
+        $totalemployees= DB::table('employee')
+                                ->where('manager_id',Auth::guard('manager')->user()->id)
+                                ->get()
+                                ->toArray();
+
         $employees= DB::table('employee')
                                 ->where('manager_id',Auth::guard('manager')->user()->id)
                                 ->where('isEvaluator','0')
@@ -96,41 +103,80 @@ class ManagerController extends Controller
                                 ->where('isEvaluator','1')
                                 ->get()
                                 ->toArray();
-        
+        $objectives = DB::table('objective')
+                        ->where('manager_id',Auth::guard('manager')->user()->id)
+                        ->get()
+                        ->toArray();
+
+        $titleoptions= DB::table('jobtitle')
+                        ->where('manager_id',Auth::guard('manager')->user()->id)
+                        ->get()
+                        ->toArray();
+
         /* for each evaluator under this manager, 
            get their submitted evaluations
         */
-        foreach($evaluators as $evaluator){
+        if(!empty($evaluators)){
+            foreach($evaluators as $evaluator){
 
-                    $submittedForms = DB::table('evaluationform')
-                                        ->where('evaluator',$evaluator->id)
-                                        ->where('isSubmitted','1')
-                                        ->where('isArchived','0')
-                                        ->get()
-                                        ->toArray();
+                $submittedForms = DB::table('evaluationform')
+                                    ->where('evaluator',$evaluator->id)
+                                    ->where('isSubmitted','1')
+                                    ->where('isArchived','0')
+                                    ->get()
+                                    ->toArray();
 
-                    $archivedForms = DB::table('evaluationform')
-                                        ->where('evaluator',$evaluator->id)
-                                        ->where('isSubmitted','1')
-                                        ->where('isArchived','1')
-                                        ->get()
-                                        ->toArray();
+                $submissions = DB::table('evaluationform')
+                                    ->select('evaluator', DB::raw('count(*) as total'))
+                                    ->groupBy('evaluator')
+                                    ->where('evaluator',$evaluator->id)
+                                    ->pluck('total', 'evaluator')->all();
+                                                    
+
+                
+                $archivedForms = DB::table('evaluationform')
+                                    ->where('evaluator',$evaluator->id)
+                                    ->where('isSubmitted','1')
+                                    ->where('isArchived','1')
+                                    ->get()
+                                    ->toArray();
+            }
+
+
+        if(!empty($submissions)){
+
+            for($i=0; $i< count($submissions); $i++){
+                $colors[] = '#'.substr(str_shuffle('ABCEDF0123456789'),0,6);
+            }
+            
+        }else{
+            $colors[] = '#'.substr(str_shuffle('ABCEDF0123456789'),0,6);
         }
 
-        $formsnumber = count($submittedForms);
 
-        
-        
+        $chart = new Chart();
+        $chart->labels = (array_keys($submissions));
+        $chart->dataset = (array_values($submissions));
+        $chart->colors = $colors;
+
+
         return view('manager.index')
                     ->with('submittedForms',$submittedForms)
                     ->with('archivedForms',$archivedForms)
                     ->with('evaluators',$evaluators)
                     ->with('employees',$employees)
-                    ->with('formsnumber',$formsnumber)
+                    ->with('chart',$chart)
+                    ->with('objectives',$objectives)
+                    ->with('titleoptions',$titleoptions)
+                    ->with('totalemployees',$totalemployees)
                     //to be used in graphs
                     ->with('evaluatorsNumeric',json_encode($evaluators,JSON_NUMERIC_CHECK))
                     ->with('evaluationFormsNumeric',json_encode(count($submittedForms),JSON_NUMERIC_CHECK));
-
+        }else{
+            Session::flash('alert-warning', 'There are no staff to view reports');
+            return redirect('manager/employees');
+        }
+        
     }
 
 
