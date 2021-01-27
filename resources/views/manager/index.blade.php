@@ -2,6 +2,10 @@
 @section('content')
 <section class="content">
 <div class="card-body">
+
+
+
+
 <div class="row" >
     <div class="col-md-4 col-sm-6 col-12">
               <div class="info-box bg-warning">
@@ -125,7 +129,7 @@
                             <th>Employee Name</th>
                             <th>Evaluator Name</th>
                             <th>Date Submitted</th>
-                            <th>Average Rating</th>
+                            <th>Average Rating (Out of 5)</th>
                             
                             </tr>
                         </thead>
@@ -212,7 +216,7 @@
                             <th>Employee Name</th>
                             <th>Evaluator Name</th>
                             <th>Date Archived</th>
-                            <th>Evaluation Rating</th>
+                            <th>Evaluation Rating (Out of 5)</th>
                             
                             </tr>
                         </thead>

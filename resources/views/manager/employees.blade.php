@@ -236,7 +236,7 @@
                         
                         @foreach($titleoptions as $titleoption)
                           
-                          @if($employee->jobtitle == $titleoption->id)
+                          @if($evaluator->jobtitle == $titleoption->id)
                             
                             {{$titleoption->titlename}}
                             

@@ -95,11 +95,11 @@
                           </td>
 
                           <td>        
-                            {{$pendingForm->start_period}}
+                            {{date("d F Y",strtotime($pendingForm->start_period))}}
                           </td>
                           
                           <td>
-                            {{$pendingForm->end_period}}
+                            {{date("d F Y",strtotime($pendingForm->end_period))}}
                           </td>
 
                         </tr>
@@ -119,7 +119,7 @@
                     <tr>
                       <th>Employee Name</th>
                       <th>Date Evaluated</th>
-                      <th>Average Rating</th>
+                      <th>Average Rating (out of 5)</th>
                       
                     </tr>
                   </thead>
@@ -150,7 +150,7 @@
                           </td>
 
                           <td>        
-                            {{$submittedForm->evaluation_date}}
+                            {{date("d F Y",strtotime($submittedForm->evaluation_date))}}
                           </td>
                           
                           <td>

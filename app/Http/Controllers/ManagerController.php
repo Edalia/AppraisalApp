@@ -103,6 +103,7 @@ class ManagerController extends Controller
                                 ->where('isEvaluator','1')
                                 ->get()
                                 ->toArray();
+                                
         $objectives = DB::table('objective')
                         ->where('manager_id',Auth::guard('manager')->user()->id)
                         ->get()
@@ -140,43 +141,61 @@ class ManagerController extends Controller
                                     ->where('isArchived','1')
                                     ->get()
                                     ->toArray();
-            }
+                
 
-
-        if(!empty($submissions)){
-
-            for($i=0; $i< count($submissions); $i++){
-                $colors[] = '#'.substr(str_shuffle('ABCEDF0123456789'),0,6);
+                return view('manager.index')
+                        ->with('submittedForms',$submittedForms)
+                        ->with('archivedForms',$archivedForms)
+                        ->with('evaluators',$evaluators)
+                        ->with('employees',$employees)
+                        //->with('chart',$chart)
+                        ->with('objectives',$objectives)
+                        ->with('titleoptions',$titleoptions)
+                        ->with('totalemployees',$totalemployees)
+                        //to be used in graphs
+                        ->with('evaluatorsNumeric',json_encode($evaluators,JSON_NUMERIC_CHECK))
+                        ->with('evaluationFormsNumeric',json_encode(count($submittedForms),JSON_NUMERIC_CHECK));
             }
             
-        }else{
-            $colors[] = '#'.substr(str_shuffle('ABCEDF0123456789'),0,6);
-        }
-
-
-        $chart = new Chart();
-        $chart->labels = (array_keys($submissions));
-        $chart->dataset = (array_values($submissions));
-        $chart->colors = $colors;
-
-
-        return view('manager.index')
-                    ->with('submittedForms',$submittedForms)
-                    ->with('archivedForms',$archivedForms)
-                    ->with('evaluators',$evaluators)
-                    ->with('employees',$employees)
-                    ->with('chart',$chart)
-                    ->with('objectives',$objectives)
-                    ->with('titleoptions',$titleoptions)
-                    ->with('totalemployees',$totalemployees)
-                    //to be used in graphs
-                    ->with('evaluatorsNumeric',json_encode($evaluators,JSON_NUMERIC_CHECK))
-                    ->with('evaluationFormsNumeric',json_encode(count($submittedForms),JSON_NUMERIC_CHECK));
-        }else{
+        }////////////////
+        else{
             Session::flash('alert-warning', 'There are no staff to view reports');
             return redirect('manager/employees');
         }
         
+            // if(!empty($submissions)){
+
+            //     for($i=0; $i< count($submissions); $i++){
+            //         $colors[] = '#'.substr(str_shuffle('ABCEDF0123456789'),0,6);
+            //     }
+                
+            // }else{
+            //     $colors[] = '#'.substr(str_shuffle('ABCEDF0123456789'),0,6);
+            // }
+
+
+            // $chart = new Chart();
+            // $chart->labels = (array_keys($submissions));
+            // $chart->dataset = (array_values($submissions));
+            // $chart->colors = $colors;
+
+
+        //     return view('manager.index')
+        //                 ->with('submittedForms',$submittedForms)
+        //                 ->with('archivedForms',$archivedForms)
+        //                 ->with('evaluators',$evaluators)
+        //                 ->with('employees',$employees)
+        //                 //->with('chart',$chart)
+        //                 ->with('objectives',$objectives)
+        //                 ->with('titleoptions',$titleoptions)
+        //                 ->with('totalemployees',$totalemployees)
+        //                 //to be used in graphs
+        //                 ->with('evaluatorsNumeric',json_encode($evaluators,JSON_NUMERIC_CHECK))
+        //                 ->with('evaluationFormsNumeric',json_encode(count($submittedForms),JSON_NUMERIC_CHECK));
+        // }else{
+        //     Session::flash('alert-warning', 'There are no staff to view reports');
+        //     return redirect('manager/employees');
+        // }  
     }
 
 

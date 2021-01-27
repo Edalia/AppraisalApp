@@ -35,6 +35,8 @@
     <ul class="navbar-nav ml-auto">
       <li>
         <a class="nav-link" data-toggle="dropdown" href="#">
+        {{Auth::guard('manager')->user()->fname}} &nbsp
+        {{Auth::guard('manager')->user()->lname}}
           <i class="far fa-user"></i>   
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
