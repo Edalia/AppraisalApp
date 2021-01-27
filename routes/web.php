@@ -61,6 +61,11 @@ Route::post('/resetManagerPassword','Auth\ForgotPasswordController@resetManagerP
 Route::post('/updateJobTitle/{id}','ManagerController@updateJobTitle')->middleware(['manager','revalidate']);
 Route::post('/updateObjective/{id}','ManagerController@updateObjective')->middleware(['manager','revalidate']);
 
+//archive evaluation
+Route::post('/archive/{id}','ManagerController@archiveEvaluation')->middleware(['manager','revalidate']);
+
+
+
 //retrieve data--Manager Role
 Route::get('manager/index' , 'ManagerController@indexGetEvaluationData')->middleware(['manager','revalidate']);
 Route::get('manager/employees','ManagerController@getEmployeesData')->middleware(['manager','revalidate']);

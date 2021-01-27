@@ -64,8 +64,14 @@ if (bars_basic_element) {
     });
 }
 </script>
+@csrf   
+@foreach (['danger', 'warning', 'success', 'info'] as $msg)
+    @if(Session::has('alert-' . $msg))
+    <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }}</p>
+    @endif
+@endforeach
 <div class="row" >
-
+        
     <h3>Submitted Evaluations</h3>
     <table id="objectiveList" class="table table-bordered table-hover">
                     <thead>
@@ -208,7 +214,7 @@ if (bars_basic_element) {
                             </td>
 
                             <td>        
-                                {{date("d F Y",strtotime($archivedForm->evaluation_date))}}
+                                {{date("d F Y",strtotime($archivedForm->archived_date))}}
                             </td>
                             
                             <td>

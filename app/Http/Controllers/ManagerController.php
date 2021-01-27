@@ -402,6 +402,7 @@ class ManagerController extends Controller
         
         $formdetails = DB::table('evaluationform')
                         ->where('isSubmitted','1')
+                        ->where('isArchived','0')
                         ->where('id',$id)
                         ->get();
 
@@ -443,6 +444,22 @@ class ManagerController extends Controller
     }
 
     public function archiveEvaluation(Request $request,$id){
+        $evaluation_array = array(
+            'isArchived' => '1',
+            'archived_date' =>date('y-m-d'),
+            'updated_at' =>date('y-m-d'),
+        ); 
 
+        $archive_evaluation = DB::table('evaluationform')
+                                ->where('id', $id)
+                                ->update($evaluation_array);
+
+        if($archive_evaluation){
+            Session::flash('alert-success', 'The evaluation was archived successfully!');
+            return redirect('manager/index');
+        }else{
+            Session::flash('alert-danger', 'There was an error in archiving the evaluation');
+            return redirect('manager/index');  
+        }
     }
 }
