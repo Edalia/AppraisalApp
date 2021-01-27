@@ -44,6 +44,9 @@ Route::get('/manager/objectives/activate/{id}', 'ManagerController@activateObjec
 Route::get('/manager/employees/activate/{id}', 'ManagerController@activateAccount')->middleware(['manager','revalidate']);
 Route::get('/manager/employees/deactivate/{id}', 'ManagerController@deactivateAccount')->middleware(['manager','revalidate']);
 
+//view evaluations
+Route::get('/manager/viewevaluation/{id}', 'ManagerController@viewEvaluation')->middleware(['manager','revalidate']);
+
 
 //manager operations
 Route::post('/registerEmployee','ManagerController@registerEmployee');

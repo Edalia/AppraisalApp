@@ -83,33 +83,54 @@ class ManagerController extends Controller
                     ->with('titleoptions',$titleoptions);
     }
 
+    //reports
     public function indexGetEvaluationData(){
-        
+        $employees= DB::table('employee')
+                                ->where('manager_id',Auth::guard('manager')->user()->id)
+                                ->where('isEvaluator','0')
+                                ->get()
+                                ->toArray();
+
         $evaluators =   DB::table('employee')
                                 ->where('manager_id',Auth::guard('manager')->user()->id)
                                 ->where('isEvaluator','1')
                                 ->get()
                                 ->toArray();
-
+        
         /* for each evaluator under this manager, 
            get their submitted evaluations
         */
         foreach($evaluators as $evaluator){
 
-                    $evaluationForms = DB::table('evaluationform')
-                            ->where('evaluator',serialize($evaluator->id))
-                            ->get()
-                            ->toArray();
+                    $submittedForms = DB::table('evaluationform')
+                                        ->where('evaluator',$evaluator->id)
+                                        ->where('isSubmitted','1')
+                                        ->where('isArchived','0')
+                                        ->get()
+                                        ->toArray();
+
+                    $archivedForms = DB::table('evaluationform')
+                                        ->where('evaluator',$evaluator->id)
+                                        ->where('isSubmitted','1')
+                                        ->where('isArchived','1')
+                                        ->get()
+                                        ->toArray();
         }
 
+        $formsnumber = count($submittedForms);
 
         
         
         return view('manager.index')
-                    ->with('evaluators',json_encode($evaluators,JSON_NUMERIC_CHECK))
-                    ->with('evaluationForms',json_encode($evaluationForms,JSON_NUMERIC_CHECK));
+                    ->with('submittedForms',$submittedForms)
+                    ->with('archivedForms',$archivedForms)
+                    ->with('evaluators',$evaluators)
+                    ->with('employees',$employees)
+                    ->with('formsnumber',$formsnumber)
+                    //to be used in graphs
+                    ->with('evaluatorsNumeric',json_encode($evaluators,JSON_NUMERIC_CHECK))
+                    ->with('evaluationFormsNumeric',json_encode(count($submittedForms),JSON_NUMERIC_CHECK));
 
-        //return ;
     }
 
 
@@ -375,4 +396,53 @@ class ManagerController extends Controller
         }    
     }
 
+
+    //view evaluation
+    public function viewEvaluation(Request $request,$id){
+        
+        $formdetails = DB::table('evaluationform')
+                        ->where('isSubmitted','1')
+                        ->where('id',$id)
+                        ->get();
+
+        foreach($formdetails as $formdetail){
+            $employees = DB::table('employee')
+                            ->where('id',$formdetail->employee)
+                            ->get()
+                            ->toArray();
+        }
+
+        $objectives = DB::table('objective')
+                            ->where('manager_id',Auth::guard('manager')->user()->id)
+                            ->get()
+                            ->toArray();
+
+        $evaluatated_objectives = DB::table('evaluatated_objective')
+                            ->where('evaluationform',$id)
+                            ->get()
+                            ->toArray();
+
+        $jobtitles = DB::table('jobtitle')
+                        ->where('manager_id',Auth::guard('manager')->user()->id)
+                        ->get()
+                        ->toArray();
+
+        if(count($formdetails) < 1){
+            return redirect('manager/index');
+        }
+        else{
+            return view('manager.viewevaluation')
+                        ->with('formdetails',$formdetails)
+                        ->with('employees',$employees)
+                        ->with('objectives',$objectives)
+                        ->with('jobtitles',$jobtitles)
+                        ->with('evaluatated_objectives',$evaluatated_objectives );
+        
+        }
+        
+    }
+
+    public function archiveEvaluation(Request $request,$id){
+
+    }
 }
