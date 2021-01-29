@@ -17,7 +17,7 @@ class CreateJobtitleTable extends Migration
             $table->id();
             $table->foreignId('manager_id');
             $table->foreign('manager_id')->references('id')->on('manager');
-            $table->string('titlename')->unique();
+            $table->string('titlename');
             $table->timestamps();
         });
     }

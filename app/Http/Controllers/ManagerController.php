@@ -141,23 +141,22 @@ class ManagerController extends Controller
                                     ->where('isArchived','1')
                                     ->get()
                                     ->toArray();
-                
 
                 return view('manager.index')
                         ->with('submittedForms',$submittedForms)
                         ->with('archivedForms',$archivedForms)
-                        ->with('evaluators',$evaluators)
+                        ->with('evaluators',$evaluators)                        
                         ->with('employees',$employees)
-                        //->with('chart',$chart)
                         ->with('objectives',$objectives)
+                        ->with('submissions',$submissions)
                         ->with('titleoptions',$titleoptions)
                         ->with('totalemployees',$totalemployees)
                         //to be used in graphs
-                        ->with('evaluatorsNumeric',json_encode($evaluators,JSON_NUMERIC_CHECK))
-                        ->with('evaluationFormsNumeric',json_encode(count($submittedForms),JSON_NUMERIC_CHECK));
+                        ->with('evaluatorsNumeric',json_encode($evaluator,JSON_NUMERIC_CHECK))
+                        ->with('evaluationsNumeric',json_encode(count($submittedForms),JSON_NUMERIC_CHECK));
             }
             
-        }////////////////
+        }
         else{
             Session::flash('alert-warning', 'There are no staff to view reports');
             return redirect('manager/employees');
@@ -246,7 +245,7 @@ class ManagerController extends Controller
     public function addJobTitle(Request $request)
     {
         $validateTitleData = $request->validate([
-            'titlename' => 'required|string|max:255|unique:jobtitle',
+            'titlename' => 'required|string|max:255',
         ]);
 
         $jobtitle = JobTitle::create([

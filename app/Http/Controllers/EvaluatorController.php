@@ -26,6 +26,7 @@ class EvaluatorController extends Controller
 
         $objectives =DB::table('objective')
                          ->where('manager_id',Auth::guard('employee')->user()->manager_id)
+                         ->where('isActive','1')
                          ->get()
                          ->toArray();
 
@@ -159,6 +160,7 @@ class EvaluatorController extends Controller
         
         $objectives =DB::table('objective')
                          ->where('manager_id',Auth::guard('employee')->user()->manager_id)
+                         ->where('isActive','1')
                          ->get()
                          ->toArray();
 
